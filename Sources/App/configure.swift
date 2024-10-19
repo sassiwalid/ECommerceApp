@@ -10,10 +10,10 @@ public func configure(_ app: Application) async throws {
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 
     app.databases.use(.mysql(
-        hostname: "127.0.0.1",
-        username: "root",
-        password: "1234",
-        database: "ecommerce_db",
+        hostname: Environment.get("RDS_HOST") ?? "127.0.0.1",
+        username: Environment.get("RDS_USER") ?? "root",
+        password: Environment.get("RDS_PASSWORD") ?? "1234",
+        database: Environment.get("RDS_DATABASE") ?? "ecommerce_db",
         tlsConfiguration: .forClient(certificateVerification: .none)
     ), as: .mysql)
 
