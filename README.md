@@ -4,37 +4,24 @@ An e-commerce application built with Swift, Vapor, SwiftUI, and MySQL. This proj
 
 ## Table of Contents
 
-1. [Introduction](#1-introduction)
-2. [Features](#2-features)
-3. [Technologies Used](#3-technologies-used)
-4. [Architecture](#4-architecture)
-5. [Installation](#5-installation)
-   - [5.1. Prerequisites](#51-prerequisites)
-   - [5.2. Installing MySQL](#52-installing-mysql)
-     - [5.2.1. On macOS](#521-on-macos)
-     - [5.2.2. On Linux](#522-on-linux)
-   - [5.3. Installing Vapor](#53-installing-vapor)
-   - [5.4. Backend Setup](#54-backend-setup)
-   - [5.5. iOS App Setup](#55-ios-app-setup)
-6. [Usage](#6-usage)
-   - [6.1. Creating a User](#61-creating-a-user)
-   - [6.2. Adding a Product](#62-adding-a-product)
-   - [6.3. Adding Product to Basket](#63-adding-product-to-basket)
-   - [6.4. Viewing the Basket](#64-viewing-the-basket)
-   - [6.5. Removing Item from Basket](#65-removing-item-from-basket)
-7. [API Endpoints](#7-api-endpoints)
-   - [7.1. User](#71-user)
-   - [7.2. Products](#72-products)
-   - [7.3. Basket](#73-basket)
-8. [Contributing](#8-contributing)
-9. [License](#9-license)
-10. [Acknowledgments](#10-acknowledgments)
+1. [Introduction](#introduction)
+2. [Features](#features)
+3. [Technologies Used](#technologies-used)
+4. [Architecture](#architecture)
+5. [Installation](#installation)
+   - [Prerequisites](#prerequisites)
+   - [Installing MySQL](#installing-mysql)
+     - [On macOS](#on-macos)
+     - [On Linux](#on-linux)
+   - [Installing Vapor](#installing-vapor)
+   - [Backend Setup](#backend-setup)
+6. [License](#license)
 
-## 1. Introduction
+## Introduction
 
 This project is an e-commerce application that allows users to browse products, add them to a shopping cart, and proceed to checkout. The backend is built using Vapor, a server-side Swift web framework, and the frontend is an iOS app developed with SwiftUI.
 
-## 2. Features
+## Features
 
 - **User Authentication**: Sign up and log in users.
 - **Product Listing**: View a list of available products with details.
@@ -42,7 +29,7 @@ This project is an e-commerce application that allows users to browse products, 
 - **Order Processing**: Place orders and view order history.
 - **Database Integration**: Persistent data storage with MySQL.
 
-## 3. Technologies Used
+## Technologies Used
 
 - **Swift**: Programming language for both backend and frontend.
 - **Vapor**: Server-side Swift web framework.
@@ -51,53 +38,105 @@ This project is an e-commerce application that allows users to browse products, 
 - **Fluent**: ORM for database interactions in Vapor.
 - **Postman**: API development and testing.
 
-## 4. Architecture
+## Architecture
 
 The project follows a client-server architecture:
 
 - **Backend API**: Handles data storage, business logic, and provides RESTful endpoints.
 - **iOS App**: Provides a user interface for interacting with backend services.
 
-## 5. Installation
+## Installation
 
-### 5.1. Prerequisites
+### Prerequisites
 
-Before you begin, ensure you have met the following requirements:
+- **Xcode** (version 16 or later)
+- **Swift 5.9** or later
+- **Homebrew** (for macOS)
+- **Terminal** access
 
-- **Operating System**: macOS or Linux
-- **Xcode**: Version 12 or later (for iOS app development)
-- **Swift**: Version 5.4 or later
-- **Homebrew**: For installing dependencies on macOS
-- **Terminal**: Access to the command-line interface
+### Installing MySQL
 
-### 5.2. Installing MySQL
+#### On macOS
 
-Follow these steps to install MySQL on your system.
+1. **Download MySQL Community Server**
 
-#### 5.2.1. On macOS
+   - Go to the [MySQL Community Downloads](https://dev.mysql.com/downloads/mysql/) page.
+   - Select the macOS DMG Archive version suitable for your system.
 
-**Step 1: Download MySQL Community Server**
+2. **Install MySQL**
 
-- Visit the [MySQL Community Downloads](https://dev.mysql.com/downloads/mysql/) page.
-- Select the macOS DMG Archive version suitable for your system.
+   - Open the downloaded `.dmg` file and run the installer.
+   - Follow the installation prompts.
+   - Set a strong root password when prompted.
+     - **Note**: Remember this password; you'll need it later.
 
-**Step 2: Install MySQL**
+3. **Start MySQL Server**
 
-- Open the downloaded `.dmg` file and run the installer.
-- Follow the installation prompts.
-- Set a strong root password when prompted.
-  - **Note**: Remember this password; you'll need it later.
+   - Open **System Preferences**.
+   - Click on **MySQL**.
+   - Click **Start MySQL Server**.
 
-**Step 3: Start MySQL Server**
+4. **Add MySQL to PATH (Optional)**
 
-- Open **System Preferences**.
-- Click on **MySQL**.
-- Click **Start MySQL Server**.
+   ```bash
+   echo 'export PATH="/usr/local/mysql/bin:$PATH"' >> ~/.bash_profile
+   source ~/.bash_profile
 
-**Step 4: Add MySQL to PATH (Optional)**
+5.	**Verify MySQL Installation**
+   Exécutez la commande suivante :
+   ```bash
+   mysql -u root -p
+   ```
 
-Open Terminal and run:
-
+Enter the root password you set earlier.
+	•	If you see the mysql> prompt, the installation was successful.
+ 
+6. **Installing Vapor**
+ 
+ ```bash
+    brew install vapor
+ ```
+Verify Vapor Installation
 ```bash
-echo 'export PATH="/usr/local/mysql/bin:$PATH"' >> ~/.bash_profile
-source ~/.bash_profile
+    vapor --version
+ ```
+•	You should see the version number of Vapor installed.
+7. **Backend Setup**
+	A.	Clone the Repository
+   ```bash
+   git clone https://github.com/sassiwalid/ecommerce-app.git
+   cd ecommerce-app/Backend
+   ```
+  B. Install Dependencies
+   ```bash
+   swift package resolve
+   ```
+  C. Configure the Database
+  ```bash
+   mysql -u root -p
+   CREATE DATABASE ecommerce_db;
+   EXIT;
+   ```
+  Update Database Credentials
+  Open configure.swift in your project and update with your MySQL credentials:
+  ```swift
+   app.databases.use(.mysql(
+    hostname: "localhost",
+    username: "root",
+    password: "your_mysql_root_password",
+    database: "ecommerce_db"
+), as: .mysql)
+   ```
+D. Run Migrations
+```bash
+   swift run Run migrate
+   ```
+E. Start the Server
+```bash
+   swift run Run serve
+   ```
+The server should now be running at http://localhost:8080.
+
+License
+
+This project is licensed under the MIT License.
